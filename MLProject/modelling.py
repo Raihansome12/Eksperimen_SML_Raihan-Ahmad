@@ -13,7 +13,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 )
 
 # MLflow experiment
-mlflow.set_tracking_uri("http://127.0.0.1:5001")
+# mlflow.set_tracking_uri("http://127.0.0.1:5001")
 mlflow.set_experiment("eksperimen_sml")
 
 with mlflow.start_run():
