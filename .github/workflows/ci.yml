@@ -1,0 +1,40 @@
+name: MLflow CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  run-mlflow:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -el {0}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12.7
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.7"
+
+      - name: Setup Miniconda & Install Dependencies
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          environment-file: MLProject/conda.yaml
+          activate-environment: mlflow-env 
+          auto-activate-base: false
+
+      - name: Install MLflow
+        run: |
+          python -m pip install --upgrade pip
+          pip install mlflow
+
+      - name: Run MLflow Project
+        run: |
+          mlflow run MLProject --env-manager=local
